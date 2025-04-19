@@ -1,13 +1,12 @@
-﻿// Models/Contrato.cs
-namespace Models
+﻿namespace Models
 {
     public class Contrato
     {
-        public int ContratoId { get; set; }
-        public int PropiedadId { get; set; }
-        public int InquilinoId { get; set; }
+        public int ContratoID { get; set; }
+        public int PropiedadID { get; set; }
+        public int InquilinoID { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
+        public decimal MontoMensual { get; set; }
     }
 }
-

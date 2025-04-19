@@ -1,28 +1,34 @@
 ﻿using DAL;
 using Models;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace BLL
 {
     public class PropiedadBLL
     {
-        private Conexion conexion = new Conexion();
-
         public void AgregarPropiedad(Propiedad propiedad)
         {
+            Conexion conexion = new Conexion();
             using (SqlConnection conn = conexion.GetConnection())
             {
-                string query = "INSERT INTO Propiedades (Direccion, Tipo, Precio) VALUES (@direccion, @tipo, @precio)";
+                string query = "INSERT INTO Propiedad (Direccion, Tipo, Precio) OUTPUT INSERTED.PropiedadID VALUES (@Direccion, @Tipo, @Precio)";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@direccion", propiedad.Direccion);
-                cmd.Parameters.AddWithValue("@tipo", propiedad.Tipo);
-                cmd.Parameters.AddWithValue("@precio", propiedad.Precio);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@Direccion", propiedad.Direccion);
+                cmd.Parameters.AddWithValue("@Tipo", propiedad.Tipo);
+                cmd.Parameters.AddWithValue("@Precio", propiedad.Precio);
+
+                try
+                {
+                    // Ejecutamos el comando y obtenemos el ID insertado
+                    propiedad.PropiedadID = (int)cmd.ExecuteScalar();  // Aquí obtenemos el ID generado
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al registrar la propiedad: {ex.Message}");
+                }
             }
         }
     }
 }
+

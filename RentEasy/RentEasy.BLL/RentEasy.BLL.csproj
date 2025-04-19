@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RentEasy.DAL\RentEasy.DAL.csproj" />
     <ProjectReference Include="..\RentEasy.Models\RentEasy.Models.csproj" />
   </ItemGroup>

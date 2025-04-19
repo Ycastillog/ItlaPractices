@@ -1,5 +1,4 @@
-﻿// BLL/ContratoBLL.cs
-using DAL;
+﻿using DAL;
 using Models;
 using System.Data.SqlClient;
 
@@ -7,23 +6,33 @@ namespace BLL
 {
     public class ContratoBLL
     {
-        private Conexion conexion = new Conexion();
-
         public void AgregarContrato(Contrato contrato)
         {
+            Conexion conexion = new Conexion();
             using (SqlConnection conn = conexion.GetConnection())
             {
-                string query = "INSERT INTO Contratos (PropiedadId, InquilinoId, FechaInicio, FechaFin) VALUES (@prop, @inq, @ini, @fin)";
+                string query = "INSERT INTO Contrato (PropiedadID, InquilinoID, FechaInicio, FechaFin, MontoMensual) OUTPUT INSERTED.ContratoID VALUES (@PropiedadID, @InquilinoID, @FechaInicio, @FechaFin, @MontoMensual)";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@prop", contrato.PropiedadId);
-                cmd.Parameters.AddWithValue("@inq", contrato.InquilinoId);
-                cmd.Parameters.AddWithValue("@ini", contrato.FechaInicio);
-                cmd.Parameters.AddWithValue("@fin", contrato.FechaFin);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@PropiedadID", contrato.PropiedadID);
+                cmd.Parameters.AddWithValue("@InquilinoID", contrato.InquilinoID);
+                cmd.Parameters.AddWithValue("@FechaInicio", contrato.FechaInicio);
+                cmd.Parameters.AddWithValue("@FechaFin", contrato.FechaFin);
+                cmd.Parameters.AddWithValue("@MontoMensual", contrato.MontoMensual);
+
+                try
+                {
+                    contrato.ContratoID = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al registrar el contrato: {ex.Message}");
+                }
             }
         }
     }
 }
+
+
+
 

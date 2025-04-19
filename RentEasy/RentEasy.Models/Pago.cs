@@ -1,12 +1,10 @@
-﻿// Models/Pago.cs
-namespace Models
+﻿namespace Models
 {
     public class Pago
     {
-        public int PagoId { get; set; }
-        public int ContratoId { get; set; }
-        public DateTime FechaPago { get; set; }
+        public int PagoID { get; set; }
+        public int ContratoID { get; set; }
         public decimal Monto { get; set; }
+        public DateTime FechaPago { get; set; }
     }
 }
-

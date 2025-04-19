@@ -6,22 +6,28 @@ namespace BLL
 {
     public class InquilinoBLL
     {
-        private Conexion conexion = new Conexion();
-
         public void AgregarInquilino(Inquilino inquilino)
         {
+            Conexion conexion = new Conexion();
             using (SqlConnection conn = conexion.GetConnection())
             {
-                string query = "INSERT INTO Inquilinos (Nombre, Cedula, Telefono) VALUES (@nombre, @cedula, @telefono)";
+                string query = "INSERT INTO Inquilino (Nombre, Cedula, Telefono) OUTPUT INSERTED.InquilinoID VALUES (@Nombre, @Cedula, @Telefono)";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@nombre", inquilino.Nombre);
-                cmd.Parameters.AddWithValue("@cedula", inquilino.Cedula);
-                cmd.Parameters.AddWithValue("@telefono", inquilino.Telefono);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@Nombre", inquilino.Nombre);
+                cmd.Parameters.AddWithValue("@Cedula", inquilino.Cedula);
+                cmd.Parameters.AddWithValue("@Telefono", inquilino.Telefono);
+
+                try
+                {
+                    // Ejecutamos el comando y obtenemos el ID insertado
+                    inquilino.InquilinoID = (int)cmd.ExecuteScalar();  // Aquí obtenemos el ID generado
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al registrar el inquilino: {ex.Message}");
+                }
             }
         }
     }
 }
-

@@ -8,119 +8,167 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            // Mostrar el menú
-            Console.WriteLine("1. Registrar Propiedad");
-            Console.WriteLine("2. Registrar Inquilino");
-            Console.WriteLine("3. Registrar Contrato");
-            Console.WriteLine("4. Registrar Pago");
+            bool continuar = true;
 
-            // Leer opción
-            var opcion = Console.ReadLine();
-
-            if (opcion == "1")
+            while (continuar)
             {
-                // Registrar Propiedad
-                PropiedadBLL propiedadBLL = new PropiedadBLL();
+                Console.WriteLine("1. Registrar Propiedad");
+                Console.WriteLine("2. Registrar Inquilino");
+                Console.WriteLine("3. Registrar Contrato");
+                Console.WriteLine("4. Registrar Pago");
+                Console.WriteLine("5. Salir");
 
-                Console.WriteLine("Ingrese dirección de la propiedad:");
-                string direccion = Console.ReadLine();
+                string opcion = Console.ReadLine();
 
-                Console.WriteLine("Ingrese tipo de propiedad (Apartamento, Casa, etc):");
-                string tipo = Console.ReadLine();
-
-                Console.WriteLine("Ingrese precio:");
-                decimal precio = Convert.ToDecimal(Console.ReadLine());
-
-                Propiedad propiedad = new Propiedad
+                if (opcion == "1")
                 {
-                    Direccion = direccion,
-                    Tipo = tipo,
-                    Precio = precio
-                };
+                    // Registrar Propiedad
+                    PropiedadBLL propiedadBLL = new PropiedadBLL();
 
-                propiedadBLL.AgregarPropiedad(propiedad);
-                Console.WriteLine("✅ Propiedad registrada exitosamente.");
-            }
-            else if (opcion == "2")
-            {
-                // Registrar Inquilino
-                InquilinoBLL inquilinoBLL = new InquilinoBLL();
+                    Console.WriteLine("Ingrese dirección de la propiedad:");
+                    string direccion = Console.ReadLine();
 
-                Console.WriteLine("Registro de Inquilino");
-                Console.WriteLine("Ingrese nombre del inquilino:");
-                string nombre = Console.ReadLine();
+                    Console.WriteLine("Ingrese tipo de propiedad (Apartamento, Casa, etc):");
+                    string tipo = Console.ReadLine();
 
-                Console.WriteLine("Ingrese cédula:");
-                string cedula = Console.ReadLine();
+                    Console.WriteLine("Ingrese precio:");
+                    decimal precio = Convert.ToDecimal(Console.ReadLine());
 
-                Console.WriteLine("Ingrese teléfono:");
-                string telefono = Console.ReadLine();
+                    Propiedad propiedad = new Propiedad
+                    {
+                        Direccion = direccion,
+                        Tipo = tipo,
+                        Precio = precio
+                    };
 
-                Inquilino inquilino = new Inquilino
+                    try
+                    {
+                        propiedadBLL.AgregarPropiedad(propiedad);
+                        Console.WriteLine($"Propiedad registrada exitosamente con ID: {propiedad.PropiedadID}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al registrar la propiedad: {ex.Message}");
+                    }
+                }
+                else if (opcion == "2")
                 {
-                    Nombre = nombre,
-                    Cedula = cedula,
-                    Telefono = telefono
-                };
+                    // Registrar Inquilino
+                    InquilinoBLL inquilinoBLL = new InquilinoBLL();
 
-                inquilinoBLL.AgregarInquilino(inquilino);
-                Console.WriteLine("✅ Inquilino registrado correctamente.");
-            }
-            else if (opcion == "3")
-            {
-                // Registrar Contrato
-                ContratoBLL contratoBLL = new ContratoBLL();
-                Console.Write("ID Propiedad: ");
-                int propId = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Registro de Inquilino");
+                    Console.WriteLine("Ingrese nombre del inquilino:");
+                    string nombre = Console.ReadLine();
 
-                Console.Write("ID Inquilino: ");
-                int inqId = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Ingrese cédula:");
+                    string cedula = Console.ReadLine();
 
-                Console.Write("Fecha Inicio (yyyy-mm-dd): ");
-                DateTime ini = DateTime.Parse(Console.ReadLine());
+                    Console.WriteLine("Ingrese teléfono:");
+                    string telefono = Console.ReadLine();
 
-                Console.Write("Fecha Fin (yyyy-mm-dd): ");
-                DateTime fin = DateTime.Parse(Console.ReadLine());
+                    Inquilino inquilino = new Inquilino
+                    {
+                        Nombre = nombre,
+                        Cedula = cedula,
+                        Telefono = telefono
+                    };
 
-                contratoBLL.AgregarContrato(new Contrato
+                    try
+                    {
+                        inquilinoBLL.AgregarInquilino(inquilino);
+                        Console.WriteLine($"Inquilino registrado exitosamente con ID: {inquilino.InquilinoID}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al registrar el inquilino: {ex.Message}");
+                    }
+                }
+                else if (opcion == "3")
                 {
-                    PropiedadId = propId,
-                    InquilinoId = inqId,
-                    FechaInicio = ini,
-                    FechaFin = fin
-                });
+                    // Registrar Contrato
+                    ContratoBLL contratoBLL = new ContratoBLL();
 
-                Console.WriteLine("✅ Contrato registrado.");
-            }
-            else if (opcion == "4")
-            {
-                // Registrar Pago
-                PagoBLL pagoBLL = new PagoBLL();
+                    Console.WriteLine("Registro de Contrato");
+                    Console.WriteLine("ID de Propiedad:");
+                    int propiedadID = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("ID Contrato: ");
-                int contratoId = int.Parse(Console.ReadLine());
+                    Console.WriteLine("ID de Inquilino:");
+                    int inquilinoID = Convert.ToInt32(Console.ReadLine());
 
-                Console.Write("Fecha de Pago (yyyy-mm-dd): ");
-                DateTime fecha = DateTime.Parse(Console.ReadLine());
+                    Console.WriteLine("Fecha de inicio (YYYY-MM-DD):");
+                    DateTime fechaInicio = DateTime.Parse(Console.ReadLine());
 
-                Console.Write("Monto: ");
-                decimal monto = decimal.Parse(Console.ReadLine());
+                    Console.WriteLine("Fecha de fin (YYYY-MM-DD):");
+                    DateTime fechaFin = DateTime.Parse(Console.ReadLine());
 
-                pagoBLL.RegistrarPago(new Pago
+                    Console.WriteLine("Monto mensual:");
+                    decimal montoMensual = Convert.ToDecimal(Console.ReadLine());
+
+                    Contrato contrato = new Contrato
+                    {
+                        PropiedadID = propiedadID,
+                        InquilinoID = inquilinoID,
+                        FechaInicio = fechaInicio,
+                        FechaFin = fechaFin,
+                        MontoMensual = montoMensual
+                    };
+
+                    try
+                    {
+                        contratoBLL.AgregarContrato(contrato);
+                        Console.WriteLine($"Contrato registrado exitosamente con ID: {contrato.ContratoID}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al registrar el contrato: {ex.Message}");
+                    }
+                }
+                else if (opcion == "4")
                 {
-                    ContratoId = contratoId,
-                    FechaPago = fecha,
-                    Monto = monto
-                });
+                    // Registrar Pago
+                    PagoBLL pagoBLL = new PagoBLL();
 
-                Console.WriteLine("✅ Pago registrado.");
+                    Console.WriteLine("Registro de Pago");
+                    Console.WriteLine("ID de Contrato:");
+                    int contratoID = Convert.ToInt32(Console.ReadLine());
+
+                    Console.WriteLine("Monto de pago:");
+                    decimal monto = Convert.ToDecimal(Console.ReadLine());
+
+                    Console.WriteLine("Fecha de pago (YYYY-MM-DD):");
+                    DateTime fechaPago = DateTime.Parse(Console.ReadLine());
+
+                    Pago pago = new Pago
+                    {
+                        ContratoID = contratoID,
+                        Monto = monto,
+                        FechaPago = fechaPago
+                    };
+
+                    try
+                    {
+                        pagoBLL.AgregarPago(pago);
+                        Console.WriteLine($"Pago registrado exitosamente con ID: {pago.PagoID}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al registrar el pago: {ex.Message}");
+                    }
+                }
+                else if (opcion == "5")
+                {
+                    // Salir
+                    Console.WriteLine("Gracias por usar el sistema.");
+                    continuar = false;
+                }
+                else
+                {
+                    Console.WriteLine("Opción no válida. Intente de nuevo.");
+                }
             }
-            else
-            {
-                Console.WriteLine("Opción no válida. Intente de nuevo.");
-            }
+
+            Console.ReadKey();
         }
     }
 }
-
 
