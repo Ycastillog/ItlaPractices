@@ -1,6 +1,8 @@
 ﻿using BLL;
 using Models;
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace ConsoleApp
 {
@@ -155,6 +157,7 @@ namespace ConsoleApp
                         Console.WriteLine($"Error al registrar el pago: {ex.Message}");
                     }
                 }
+
                 else if (opcion == "5")
                 {
                     // Salir
@@ -171,4 +174,3 @@ namespace ConsoleApp
         }
     }
 }
-

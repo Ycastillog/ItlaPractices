@@ -1,6 +1,7 @@
-﻿using DAL;
-using Models;
+﻿using System;
 using System.Data.SqlClient;
+using DAL;
+using Models;
 
 namespace BLL
 {
@@ -22,6 +23,7 @@ namespace BLL
                 {
                     // Ejecutamos el comando y obtenemos el ID insertado
                     propiedad.PropiedadID = (int)cmd.ExecuteScalar();  // Aquí obtenemos el ID generado
+                    // Aquí no se imprime ningún mensaje dentro de esta clase
                 }
                 catch (Exception ex)
                 {
@@ -31,4 +33,7 @@ namespace BLL
         }
     }
 }
+
+
+
 

@@ -18,17 +18,8 @@ namespace BLL
                 cmd.Parameters.AddWithValue("@Monto", pago.Monto);
                 cmd.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
 
-                try
-                {
-                    pago.PagoID = (int)cmd.ExecuteScalar();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al registrar el pago: {ex.Message}");
-                }
+                pago.PagoID = (int)cmd.ExecuteScalar();  // Solo obtenemos el ID, no mostramos nada aquí
             }
         }
     }
 }
-
-
