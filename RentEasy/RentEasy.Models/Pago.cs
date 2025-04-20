@@ -4,7 +4,9 @@
     {
         public int PagoID { get; set; }
         public int ContratoID { get; set; }
-        public decimal Monto { get; set; }
         public DateTime FechaPago { get; set; }
+        public decimal Monto { get; set; } // Aquí corregido
     }
 }
+
+

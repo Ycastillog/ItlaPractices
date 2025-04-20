@@ -1,70 +1,31 @@
 ﻿using DAL;
 using Models;
-using System;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace BLL
 {
     public class PagoBLL
     {
-        public void AgregarPago(Pago pago)
+        private PagoDAL dal = new PagoDAL();
+
+        public void RegistrarPago(Pago pago)
         {
-            Conexion conexion = new Conexion();
-            using (SqlConnection conn = conexion.GetConnection())
-            {
-                string query = "INSERT INTO Pago (ContratoID, Monto, FechaPago) OUTPUT INSERTED.PagoID VALUES (@ContratoID, @Monto, @FechaPago)";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@ContratoID", pago.ContratoID);
-                cmd.Parameters.AddWithValue("@Monto", pago.Monto);
-                cmd.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
-
-                pago.PagoID = (int)cmd.ExecuteScalar();  // Solo obtenemos el ID, no mostramos nada aquí
-            }
+            dal.InsertarPago(pago); // Aquí es donde estaba el error
         }
 
         public void ModificarPago(Pago pago)
         {
-            Conexion conexion = new Conexion();
-            using (SqlConnection conn = conexion.GetConnection())
-            {
-                string query = "UPDATE Pago SET Monto = @Monto, FechaPago = @FechaPago WHERE PagoID = @PagoID";
-                SqlCommand cmd = new SqlCommand(query, conn);
-
-                cmd.Parameters.AddWithValue("@PagoID", pago.PagoID);
-                cmd.Parameters.AddWithValue("@Monto", pago.Monto);
-                cmd.Parameters.AddWithValue("@FechaPago", pago.FechaPago);
-
-                try
-                {
-                    cmd.ExecuteNonQuery();  // Ejecutamos la actualización
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al modificar el pago: {ex.Message}");
-                }
-            }
+            dal.ActualizarPago(pago);
         }
 
         public void EliminarPago(int pagoID)
         {
-            Conexion conexion = new Conexion();
-            using (SqlConnection conn = conexion.GetConnection())
-            {
-                string query = "DELETE FROM Pago WHERE PagoID = @PagoID";
-                SqlCommand cmd = new SqlCommand(query, conn);
+            dal.EliminarPago(pagoID);
+        }
 
-                cmd.Parameters.AddWithValue("@PagoID", pagoID);
-
-                try
-                {
-                    cmd.ExecuteNonQuery();  // Ejecutamos la eliminación
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error al eliminar el pago: {ex.Message}");
-                }
-            }
+        public List<Pago> ObtenerPagos()
+        {
+            return dal.ObtenerPagos();
         }
     }
 }
